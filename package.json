@@ -1,0 +1,24 @@
+{
+  "name": "web-chat-test-api",
+  "version": "1.0.0",
+  "description": "Backend API to new employees test",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pagerinc/web-chat-test-api.git"
+  },
+  "author": "Alex Ruzzarin <alex@pager.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/pagerinc/web-chat-test-api/issues"
+  },
+  "homepage": "https://github.com/pagerinc/web-chat-test-api#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1"
+  }
+}
