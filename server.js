@@ -6,6 +6,8 @@ const port = process.env.PORT || 3000;
 
 const messages = [];
 
+const onlineUsers = [];
+
 const isTyping = {};
 
 app.get("/", (req, res) => {
@@ -14,12 +16,16 @@ app.get("/", (req, res) => {
 
 io.on("connection", socket => {
   const username = socket.handshake.query.username;
+
   if (!username) {
     socket.disconnect(true);
     return;
   }
-
+  
+  onlineUsers.push(username);
   socket.emit("history", messages);
+  
+  io.emit("users", onlineUsers);
   io.emit("userConnected", username);
 
   socket.on("message", data => {
@@ -33,7 +39,6 @@ io.on("connection", socket => {
 
   socket.on("isTyping", status => {
     isTyping[username] = status;
-
     io.emit("isTyping", isTyping);
   });
 
