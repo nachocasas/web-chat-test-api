@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 const messages = [];
 
-const onlineUsers = [];
+let onlineUsers = [];
 
 const isTyping = {};
 
@@ -22,10 +22,10 @@ io.on("connection", socket => {
     return;
   }
   
-  onlineUsers.push(username);
-  socket.emit("history", messages);
+  socket.emit("history", { messages, onlineUsers });
   
-  io.emit("users", onlineUsers);
+  onlineUsers.push(username);
+
   io.emit("userConnected", username);
 
   socket.on("message", data => {
@@ -43,6 +43,7 @@ io.on("connection", socket => {
   });
 
   socket.on("disconnect", () => {
+    onlineUsers = removeElements(onlineUsers,username);
     io.emit("userDisconnected", username);
   });
 });
@@ -50,3 +51,13 @@ io.on("connection", socket => {
 http.listen(port, () => {
   console.log("listening on *:" + port);
 });
+
+function removeElements(arr, str) {
+  for (let i=arr.length-1; i>=0; i--) {
+    if (arr[i] === str) {
+      arr.splice(i, 1);
+      break;
+    }
+  }
+  return arr;
+}
